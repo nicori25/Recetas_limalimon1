@@ -8,6 +8,7 @@
         <?php if(isset($_SESSION['user_id'])) { ?>
 
             <a href="recetas.php">Recetas</a>
+            <a href="perfil.php">Perfil</a>
             <a href="logout.php">Cerrar sesión</a>
 
         <?php } else { ?>
