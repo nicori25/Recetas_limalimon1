@@ -9,8 +9,17 @@ if(!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$sql = "SELECT * FROM recetas WHERE usuario_id = $user_id";
-$result = $conn->query($sql);
+$stmt = $conn->prepare("
+SELECT *
+FROM recetas
+WHERE usuario_id=?
+ORDER BY id DESC
+");
+
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+
+$result = $stmt->get_result();
 ?>
 
 <link rel="stylesheet" href="css/style.css">
@@ -19,48 +28,171 @@ $result = $conn->query($sql);
 
 <div class="container">
 
-    <h2>Mis recetas</h2>
+<h2>Mis recetas</h2>
 
-    <div class="form-box">
+<div class="form-box">
 
-        <form action="guardar_receta.php" method="POST">
+<form action="guardar_receta.php" method="POST">
 
-            <input type="text" name="titulo" placeholder="Título" required>
+<input
+type="text"
+name="titulo"
+placeholder="Título"
+required
+>
 
-            <textarea name="descripcion" placeholder="Descripción"></textarea>
+<textarea
+name="descripcion"
+placeholder="Descripción"
+></textarea>
 
-            <button type="submit">
-                Guardar receta
-            </button>
+<textarea
+name="ingredientes"
+placeholder="Ingredientes"
+></textarea>
 
-        </form>
+<textarea
+name="pasos"
+placeholder="Paso a paso"
+></textarea>
 
-    </div>
+<label>Tipo de receta</label>
 
-    <div class="recetas-grid">
+<select
+name="tipo"
+id="tipo"
+onchange="mostrarOtro()"
+>
 
-        <?php while($row = $result->fetch_assoc()) { ?>
+<option value="vegano">
+Vegano
+</option>
 
-            <div class="card">
+<option value="vegetariano">
+Vegetariano
+</option>
 
-                <h3><?php echo $row['titulo']; ?></h3>
+<option value="sin gluten">
+Sin gluten
+</option>
 
-                <p><?php echo $row['descripcion']; ?></p>
+<option value="sin lactosa">
+Sin lactosa
+</option>
 
-                <form action="eliminar_receta.php" method="POST">
+<option value="otro">
+Otra alergia/intolerancia
+</option>
 
-                    <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+</select>
 
-                    <button type="submit">
-                        Eliminar
-                    </button>
+<input
+type="text"
+name="tipo_personalizado"
+id="otro"
+placeholder="Escribir tipo..."
+style="display:none;"
+>
 
-                </form>
+<button type="submit">
+Guardar receta
+</button>
 
-            </div>
-
-        <?php } ?>
-
-    </div>
+</form>
 
 </div>
+
+<div class="recetas-grid">
+
+<?php while($row = $result->fetch_assoc()) { ?>
+
+<div class="card">
+
+<h3>
+<?php echo $row['titulo']; ?>
+</h3>
+
+<p>
+<?php echo $row['descripcion']; ?>
+</p>
+
+<p>
+
+<strong>Ingredientes:</strong>
+
+<br>
+
+<?php echo $row['ingredientes']; ?>
+
+</p>
+
+<p>
+
+<strong>Preparación:</strong>
+
+<br>
+
+<?php echo $row['pasos']; ?>
+
+</p>
+
+<p>
+
+<strong>Tipo:</strong>
+
+<?php echo $row['tipo']; ?>
+
+</p>
+
+<form
+action="eliminar_receta.php"
+method="POST"
+>
+
+<input
+type="hidden"
+name="id"
+value="<?php echo $row['id']; ?>"
+>
+
+<button>
+
+Eliminar
+
+</button>
+
+</form>
+
+</div>
+
+<?php } ?>
+
+</div>
+
+</div>
+
+<script>
+
+function mostrarOtro(){
+
+let valor =
+document.getElementById("tipo").value;
+
+let input =
+document.getElementById("otro");
+
+if(valor==="otro"){
+
+input.style.display="block";
+
+}else{
+
+input.style.display="none";
+
+input.value="";
+
+}
+
+}
+
+</script>

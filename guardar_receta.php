@@ -2,16 +2,69 @@
 session_start();
 include("config.php");
 
-$titulo = $_POST['titulo'];
-$descripcion = $_POST['descripcion'];
-$usuario_id = $_SESSION['user_id'];
+$titulo =
+$_POST['titulo'];
 
-$stmt = $conn->prepare("INSERT INTO recetas(titulo,descripcion,usuario_id)
-VALUES(?,?,?)");
+$descripcion =
+$_POST['descripcion'];
 
-$stmt->bind_param("ssi", $titulo, $descripcion, $usuario_id);
+$ingredientes =
+$_POST['ingredientes'];
+
+$pasos =
+$_POST['pasos'];
+
+$tipo =
+$_POST['tipo'];
+
+$usuario_id =
+$_SESSION['user_id'];
+
+if(
+$tipo==="otro"
+&&
+!empty(
+$_POST['tipo_personalizado']
+)
+){
+
+$tipo =
+$_POST['tipo_personalizado'];
+
+}
+
+$stmt =
+$conn->prepare("
+INSERT INTO recetas
+(
+titulo,
+descripcion,
+ingredientes,
+pasos,
+tipo,
+usuario_id
+)
+VALUES
+(
+?,?,?,?,?,?
+)
+");
+
+$stmt->bind_param(
+"sssssi",
+$titulo,
+$descripcion,
+$ingredientes,
+$pasos,
+$tipo,
+$usuario_id
+);
 
 $stmt->execute();
 
-header("Location: recetas.php");
+header(
+"Location: recetas.php"
+);
+
+exit();
 ?>
