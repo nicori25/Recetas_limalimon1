@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 19-05-2026 a las 22:04:34
+-- Tiempo de generación: 26-05-2026 a las 22:08:55
 -- Versión del servidor: 10.4.28-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -44,7 +44,10 @@ CREATE TABLE `recetas` (
   `id` int(11) NOT NULL,
   `titulo` varchar(255) DEFAULT NULL,
   `descripcion` text DEFAULT NULL,
-  `usuario_id` int(11) DEFAULT NULL
+  `usuario_id` int(11) DEFAULT NULL,
+  `ingredientes` text DEFAULT NULL,
+  `pasos` text DEFAULT NULL,
+  `tipo` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -57,15 +60,16 @@ CREATE TABLE `usuarios` (
   `id` int(11) NOT NULL,
   `nombre` varchar(100) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `password` varchar(255) DEFAULT NULL
+  `password` varchar(255) DEFAULT NULL,
+  `preferencia_tipo` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`) VALUES
-(1, 'ariel', 'ariaranda07@gmail.com', '$2y$10$/jnPZhyhCV1ve18eiTNT9ewV.O6GInQlgARSW5FIZsg4BLPLS2CkC');
+INSERT INTO `usuarios` (`id`, `nombre`, `email`, `password`, `preferencia_tipo`) VALUES
+(1, 'ariel', 'ariaranda07@gmail.com', '$2y$10$/jnPZhyhCV1ve18eiTNT9ewV.O6GInQlgARSW5FIZsg4BLPLS2CkC', NULL);
 
 --
 -- Índices para tablas volcadas
