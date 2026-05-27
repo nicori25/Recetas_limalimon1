@@ -36,13 +36,25 @@ $result = $stmt->get_result();
 
 <div class="card">
 
-<h3><?php echo $row['titulo']; ?></h3>
+<h3><?php echo htmlspecialchars($row['titulo']); ?></h3>
 
-<p><?php echo $row['descripcion']; ?></p>
+<p><?php echo nl2br(htmlspecialchars($row['descripcion'])); ?></p>
 
 <p>
-Tipo:
-<?php echo $row['tipo']; ?>
+<strong>Ingredientes:</strong>
+<br>
+<?php echo nl2br(htmlspecialchars($row['ingredientes'])); ?>
+</p>
+
+<p>
+<strong>Preparacion:</strong>
+<br>
+<?php echo nl2br(htmlspecialchars($row['pasos'])); ?>
+</p>
+
+<p>
+<strong>Tipo:</strong>
+<?php echo htmlspecialchars($row['tipo']); ?>
 </p>
 
 <form action="eliminar_receta.php" method="POST">
@@ -50,7 +62,7 @@ Tipo:
 <input
 type="hidden"
 name="id"
-value="<?php echo $row['id']; ?>"
+value="<?php echo (int)$row['id']; ?>"
 >
 
 <button>

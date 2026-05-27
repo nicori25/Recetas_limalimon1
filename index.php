@@ -24,13 +24,30 @@ $result = $conn->query($sql);
 
             <div class="card">
 
-                <h3><?php echo $row['titulo']; ?></h3>
+                <h3><?php echo htmlspecialchars($row['titulo']); ?></h3>
 
-                <p><?php echo $row['descripcion']; ?></p>
+                <p><?php echo nl2br(htmlspecialchars($row['descripcion'])); ?></p>
+
+                <p>
+                    <strong>Ingredientes:</strong>
+                    <br>
+                    <?php echo nl2br(htmlspecialchars($row['ingredientes'])); ?>
+                </p>
+
+                <p>
+                    <strong>Preparacion:</strong>
+                    <br>
+                    <?php echo nl2br(htmlspecialchars($row['pasos'])); ?>
+                </p>
+
+                <p>
+                    <strong>Tipo:</strong>
+                    <?php echo htmlspecialchars($row['tipo']); ?>
+                </p>
 
                 <small>
                     Publicado por:
-                    <?php echo $row['nombre']; ?>
+                    <?php echo htmlspecialchars($row['nombre']); ?>
                 </small>
                 <?php if(isset($_SESSION['user_id'])) { ?>
 
@@ -39,7 +56,7 @@ $result = $conn->query($sql);
     <input 
         type="hidden"
         name="receta_id"
-        value="<?php echo $row['id']; ?>"
+        value="<?php echo (int)$row['id']; ?>"
     >
 
     <textarea 
@@ -77,10 +94,10 @@ while($op = $opiniones->fetch_assoc()){
 
     <p>
         <strong>
-            <?php echo $op['nombre']; ?>:
+            <?php echo htmlspecialchars($op['nombre']); ?>:
         </strong>
 
-        <?php echo $op['comentario']; ?>
+        <?php echo nl2br(htmlspecialchars($op['comentario'])); ?>
     </p>
 
 <?php } ?>

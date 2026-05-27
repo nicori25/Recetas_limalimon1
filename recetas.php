@@ -28,7 +28,7 @@ $result = $stmt->get_result();
 
 <div class="container">
 
-<h2>Mis recetas</h2>
+<h2>Recetas</h2>
 
 <div class="form-box">
 
@@ -43,16 +43,19 @@ required
 
 <textarea
 name="descripcion"
+required
 placeholder="Descripción"
 ></textarea>
 
 <textarea
 name="ingredientes"
+required
 placeholder="Ingredientes"
 ></textarea>
 
 <textarea
 name="pasos"
+required
 placeholder="Paso a paso"
 ></textarea>
 
@@ -94,6 +97,32 @@ placeholder="Escribir tipo..."
 style="display:none;"
 >
 
+<br><br>
+
+<label>Temporada recomendada</label>
+
+<select name="estacion">
+
+<option value="verano">
+Verano
+</option>
+
+<option value="otoño">
+Otoño
+</option>
+
+<option value="invierno">
+Invierno
+</option>
+
+<option value="primavera">
+Primavera
+</option>
+
+</select>
+
+<br><br>
+
 <button type="submit">
 Guardar receta
 </button>
@@ -102,97 +131,34 @@ Guardar receta
 
 </div>
 
-<div class="recetas-grid">
 
-<?php while($row = $result->fetch_assoc()) { ?>
-
-<div class="card">
-
-<h3>
-<?php echo $row['titulo']; ?>
-</h3>
-
-<p>
-<?php echo $row['descripcion']; ?>
-</p>
-
-<p>
-
-<strong>Ingredientes:</strong>
-
-<br>
-
-<?php echo $row['ingredientes']; ?>
-
-</p>
-
-<p>
-
-<strong>Preparación:</strong>
-
-<br>
-
-<?php echo $row['pasos']; ?>
-
-</p>
-
-<p>
-
-<strong>Tipo:</strong>
-
-<?php echo $row['tipo']; ?>
-
-</p>
-
-<form
-action="eliminar_receta.php"
-method="POST"
->
-
-<input
-type="hidden"
-name="id"
-value="<?php echo $row['id']; ?>"
->
-
-<button>
-
-Eliminar
-
-</button>
-
-</form>
-
-</div>
-
-<?php } ?>
 
 </div>
 
 </div>
 
-<script>
+    <script>
 
-function mostrarOtro(){
+    function mostrarOtro(){
 
-let valor =
-document.getElementById("tipo").value;
+    let valor =
+    document.getElementById("tipo").value;
 
-let input =
-document.getElementById("otro");
+    let input =
+    document.getElementById("otro");
 
-if(valor==="otro"){
+    if(valor==="otro"){
 
-input.style.display="block";
+    input.style.display="block";
 
-}else{
+    }else{
 
-input.style.display="none";
+    input.style.display="none";
 
-input.value="";
+    input.value="";
 
-}
+    }
 
-}
+    }
 
-</script>
+    </script>

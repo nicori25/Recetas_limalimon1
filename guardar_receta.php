@@ -2,34 +2,38 @@
 session_start();
 include("config.php");
 
-$titulo =
-$_POST['titulo'];
+if(!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
 
-$descripcion =
-$_POST['descripcion'];
+$titulo = trim($_POST['titulo'] ?? "");
+$descripcion = trim($_POST['descripcion'] ?? "");
+$ingredientes = trim($_POST['ingredientes'] ?? "");
+$pasos = trim($_POST['pasos'] ?? "");
+$tipo = trim($_POST['tipo'] ?? "");
+$estacion = trim($_POST['estacion'] ?? "");
+$usuario_id = $_SESSION['user_id'];
 
-$ingredientes =
-$_POST['ingredientes'];
-
-$pasos =
-$_POST['pasos'];
-
-$tipo =
-$_POST['tipo'];
-
-$usuario_id =
-$_SESSION['user_id'];
+if(
+    $titulo === "" ||
+    $descripcion === "" ||
+    $ingredientes === "" ||
+    $pasos === "" ||
+    $tipo === "" ||
+    $estacion === ""
+) {
+    die("Faltan datos obligatorios para guardar la receta.");
+}
 
 if(
 $tipo==="otro"
 &&
-!empty(
-$_POST['tipo_personalizado']
-)
+!empty(trim($_POST['tipo_personalizado'] ?? ""))
 ){
 
-$tipo =
-$_POST['tipo_personalizado'];
+$tipo=
+trim($_POST['tipo_personalizado']);
 
 }
 
@@ -42,25 +46,33 @@ descripcion,
 ingredientes,
 pasos,
 tipo,
+estacion,
 usuario_id
 )
 VALUES
 (
-?,?,?,?,?,?
+?,?,?,?,?,?,?
 )
 ");
 
+if(!$stmt) {
+    die("Error preparando la receta: " . $conn->error);
+}
+
 $stmt->bind_param(
-"sssssi",
+"ssssssi",
 $titulo,
 $descripcion,
 $ingredientes,
 $pasos,
 $tipo,
+$estacion,
 $usuario_id
 );
 
-$stmt->execute();
+if(!$stmt->execute()) {
+    die("Error guardando la receta: " . $stmt->error);
+}
 
 header(
 "Location: recetas.php"
