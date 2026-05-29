@@ -10,6 +10,7 @@
             <a href="recetas.php">Recetas</a>
             <a href="ruleta.php">Ruleta</a>
             <a href="mis_recetas.php">Mis recetas</a>
+            <a href="mis_favoritos.php">Mis Favoritos</a>
             <a href="perfil.php">Perfil</a>
             <a href="logout.php">Cerrar sesión</a>
 

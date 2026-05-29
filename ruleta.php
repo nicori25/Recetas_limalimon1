@@ -2,8 +2,6 @@
 session_start();
 include("config.php");
 
-// Detectar estación (Argentina)
-
 $mes = date("n");
 
 if($mes==12 || $mes<=2){
