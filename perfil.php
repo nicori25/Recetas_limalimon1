@@ -1,6 +1,7 @@
 <?php
 session_start();
 include("config.php");
+include("preferencias.php");
 
 if(!isset($_SESSION['user_id'])){
     header("Location: login.php");
@@ -20,6 +21,7 @@ $stmt->execute();
 
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
+$preferencias = obtener_preferencias($conn);
 ?>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -33,7 +35,7 @@ $user = $result->fetch_assoc();
 
 <h2>Mi Perfil</h2>
 
-<form action="actualizar_perfil.php" method="POST">
+<form action="actualizar.php" method="POST">
 
 <input
 type="text"
@@ -67,33 +69,16 @@ onchange="mostrarOtro()"
 Sin preferencia
 </option>
 
-<option
-value="vegano"
-<?php if(($user['preferencia_tipo'] ?? "")=="vegano") echo "selected"; ?>
->
-Vegano
-</option>
+<?php foreach($preferencias as $valor => $texto) { ?>
 
 <option
-value="vegetariano"
-<?php if(($user['preferencia_tipo'] ?? "")=="vegetariano") echo "selected"; ?>
+value="<?php echo htmlspecialchars($valor); ?>"
+<?php if(($user['preferencia_tipo'] ?? "") == $valor) echo "selected"; ?>
 >
-Vegetariano
+<?php echo htmlspecialchars($texto); ?>
 </option>
 
-<option
-value="sin gluten"
-<?php if(($user['preferencia_tipo'] ?? "")=="sin gluten") echo "selected"; ?>
->
-Sin gluten
-</option>
-
-<option
-value="sin lactosa"
-<?php if(($user['preferencia_tipo'] ?? "")=="sin lactosa") echo "selected"; ?>
->
-Sin lactosa
-</option>
+<?php } ?>
 
 <option value="otro">
 Otra alergia/intolerancia

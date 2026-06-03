@@ -2,22 +2,26 @@
 session_start();
 include("config.php");
 
+if(!isset($_SESSION['user_id'])){
+    header("Location: login.php");
+    exit();
+}
+
 $id = $_SESSION['user_id'];
 
-$nombre = $_POST['nombre'];
-$email = $_POST['email'];
-$password = $_POST['password'];
+$nombre = trim($_POST['nombre'] ?? "");
+$email = trim($_POST['email'] ?? "");
+$password = $_POST['password'] ?? "";
 
 $preferencia =
-$_POST['preferencia_tipo'];
+trim($_POST['preferencia_tipo'] ?? "");
 
 if(
 $preferencia=="otro"
-&& !empty($_POST['preferencia_personalizada'])
 ){
 
 $preferencia =
-$_POST['preferencia_personalizada'];
+trim($_POST['preferencia_personalizada'] ?? "");
 
 }
 

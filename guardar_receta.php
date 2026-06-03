@@ -15,6 +15,10 @@ $tipo = trim($_POST['tipo'] ?? "");
 $estacion = trim($_POST['estacion'] ?? "");
 $usuario_id = $_SESSION['user_id'];
 
+if($tipo === "otro") {
+    $tipo = trim($_POST['tipo_personalizado'] ?? "");
+}
+
 if(
     $titulo === "" ||
     $descripcion === "" ||
@@ -24,17 +28,6 @@ if(
     $estacion === ""
 ) {
     die("Faltan datos obligatorios para guardar la receta.");
-}
-
-if(
-$tipo==="otro"
-&&
-!empty(trim($_POST['tipo_personalizado'] ?? ""))
-){
-
-$tipo=
-trim($_POST['tipo_personalizado']);
-
 }
 
 $stmt =

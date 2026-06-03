@@ -1,6 +1,7 @@
 <?php
 session_start();
 include("config.php");
+include("preferencias.php");
 
 if(!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -20,6 +21,7 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 
 $result = $stmt->get_result();
+$preferencias = obtener_preferencias($conn);
 ?>
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -68,21 +70,13 @@ id="tipo"
 onchange="mostrarOtro()"
 >
 
-<option value="vegano">
-Vegano
+<?php foreach($preferencias as $valor => $texto) { ?>
+
+<option value="<?php echo htmlspecialchars($valor); ?>">
+<?php echo htmlspecialchars($texto); ?>
 </option>
 
-<option value="vegetariano">
-Vegetariano
-</option>
-
-<option value="sin gluten">
-Sin gluten
-</option>
-
-<option value="sin lactosa">
-Sin lactosa
-</option>
+<?php } ?>
 
 <option value="otro">
 Otra alergia/intolerancia

@@ -27,7 +27,7 @@ if ($_POST) {
         }
     }
 
-    echo "Datos incorrectos";
+    echo "Datos incorrectos <a href='register.php'>registrate</a>";
 }
 ?>
 
