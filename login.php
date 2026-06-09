@@ -39,8 +39,25 @@ if ($_POST) {
 
     <form method="POST">
         <input type="email" name="email" placeholder="Email" required>
-        <input type="password" name="password" placeholder="Contraseña" required>
-
+        <input type="password" name="password" id="password" placeholder="Contraseña" required>
+        <input type="checkbox" onclick="mostrarPassword()" placeholder="Mostrar Contraseña">
         <button type="submit">Entrar</button>
     </form>
 </div>
+<script>
+function mostrarPassword() {
+
+    let pass =
+    document.getElementById("password");
+
+    if(pass.type === "password"){
+
+        pass.type = "text";
+
+    }else{
+
+        pass.type = "password";
+
+    }
+}
+</script>

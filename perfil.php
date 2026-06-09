@@ -54,9 +54,10 @@ required
 <input
 type="password"
 name="password"
+id="newpassword"
 placeholder="Nueva contraseña (opcional)"
 >
-
+<input type="checkbox" onclick="mostrarNewPassword()">
 <label>Preferencia alimentaria</label>
 
 <select
@@ -105,6 +106,21 @@ Actualizar perfil
 </div>
 
 <script>
+function mostrarNewPassword() {
+
+    let pass =
+    document.getElementById("newpassword");
+
+    if(pass.type === "password"){
+
+        pass.type = "text";
+
+    }else{
+
+        pass.type = "password";
+
+    }
+}
 
 function mostrarOtro(){
 
