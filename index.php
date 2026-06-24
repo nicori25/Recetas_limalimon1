@@ -28,6 +28,16 @@ $result = $conn->query($sql);
 
 <div class="card">
 
+<?php if(!empty($row['imagen'])){ ?>
+
+<img
+src="uploads/<?php echo htmlspecialchars($row['imagen']); ?>"
+class="imagen-receta"
+alt="Receta"
+>
+
+<?php } ?>
+
 <h3>
 <?php echo htmlspecialchars($row['titulo']); ?>
 </h3>

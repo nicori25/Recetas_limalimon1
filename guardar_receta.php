@@ -26,12 +26,65 @@ if(
     $pasos === "" ||
     $tipo === "" ||
     $estacion === ""
-) {
+){
     die("Faltan datos obligatorios para guardar la receta.");
 }
 
-$stmt =
-$conn->prepare("
+/*
+|--------------------------------------------------------------------------
+| SUBIR IMAGEN
+|--------------------------------------------------------------------------
+*/
+
+$imagen = null;
+
+if(
+    isset($_FILES['imagen']) &&
+    $_FILES['imagen']['error'] === 0
+){
+
+    $ext = strtolower(
+        pathinfo(
+            $_FILES['imagen']['name'],
+            PATHINFO_EXTENSION
+        )
+    );
+
+    $permitidas = [
+        'jpg',
+        'jpeg',
+        'png',
+        'webp',
+        'gif'
+    ];
+
+    if(in_array($ext, $permitidas)){
+
+        $nombreImagen =
+        time() . "_" .
+        uniqid() . "." .
+        $ext;
+
+        $rutaDestino =
+        "uploads/" .
+        $nombreImagen;
+
+        move_uploaded_file(
+            $_FILES['imagen']['tmp_name'],
+            $rutaDestino
+        );
+
+        $imagen = $nombreImagen;
+    }
+}
+
+/*
+|--------------------------------------------------------------------------
+| GUARDAR RECETA
+|--------------------------------------------------------------------------
+*/
+
+$stmt = $conn->prepare("
 INSERT INTO recetas
 (
 titulo,
@@ -40,36 +93,41 @@ ingredientes,
 pasos,
 tipo,
 estacion,
+imagen,
 usuario_id
 )
 VALUES
 (
-?,?,?,?,?,?,?
+?,?,?,?,?,?,?,?
 )
 ");
 
-if(!$stmt) {
-    die("Error preparando la receta: " . $conn->error);
+if(!$stmt){
+    die(
+        "Error preparando la receta: "
+        . $conn->error
+    );
 }
 
 $stmt->bind_param(
-"ssssssi",
+"sssssssi",
 $titulo,
 $descripcion,
 $ingredientes,
 $pasos,
 $tipo,
 $estacion,
+$imagen,
 $usuario_id
 );
 
-if(!$stmt->execute()) {
-    die("Error guardando la receta: " . $stmt->error);
+if(!$stmt->execute()){
+    die(
+        "Error guardando la receta: "
+        . $stmt->error
+    );
 }
 
-header(
-"Location: recetas.php"
-);
-
+header("Location: recetas.php");
 exit();
 ?>

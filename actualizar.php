@@ -27,6 +27,30 @@ trim($_POST['preferencia_personalizada'] ?? "");
 
 if(!empty($password)){
 
+if(
+!preg_match(
+'/^(?=.*[A-Z])(?=.*[0-9])(?=.*[\W]).{6,18}$/',
+$password
+)
+){
+
+die("
+<h3>La contraseña no cumple los requisitos</h3>
+
+Debe tener:
+
+<ul>
+<li>Entre 6 y 18 caracteres</li>
+<li>Al menos una letra mayúscula</li>
+<li>Al menos un número</li>
+<li>Al menos un carácter especial</li>
+</ul>
+
+<a href='perfil.php'>Volver</a>
+");
+
+}
+
 $pass =
 password_hash(
 $password,

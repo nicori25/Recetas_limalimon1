@@ -4,27 +4,33 @@ include("config.php");
 
 $mes = date("n");
 
-if($mes==12 || $mes<=2){
+if($mes == 12 || $mes <= 2){
 
-$estacion="verano";
+    $estacion = "verano";
 
-}elseif($mes<=5){
+}elseif($mes <= 5){
 
-$estacion="otoño";
+    $estacion = "otoño";
 
-}elseif($mes<=8){
+}elseif($mes <= 8){
 
-$estacion="invierno";
+    $estacion = "invierno";
 
 }else{
 
-$estacion="primavera";
+    $estacion = "primavera";
 
 }
 
-$stmt =
-$conn->prepare("
-SELECT id,titulo
+$stmt = $conn->prepare("
+SELECT
+id,
+titulo,
+descripcion,
+ingredientes,
+pasos,
+tipo,
+imagen
 FROM recetas
 WHERE estacion=?
 ");
@@ -36,32 +42,86 @@ $estacion
 
 $stmt->execute();
 
-$result =
-$stmt->get_result();
+$result = $stmt->get_result();
 
-$recetas=[];
+$recetas = [];
 
-while(
-$row=
-$result->fetch_assoc()
-){
+while($row = $result->fetch_assoc()){
 
-$recetas[]=$row;
+    $recetas[] = $row;
 
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ruleta de recetas</title>
+
 <link rel="stylesheet" href="css/style.css">
+
+<style>
+
+.ruleta-box{
+
+text-align:center;
+
+}
+
+.ruleta-btn{
+
+font-size:20px;
+padding:15px 30px;
+
+}
+
+.girando{
+
+font-size:28px;
+font-weight:bold;
+animation:girarTexto 0.7s infinite;
+
+}
+
+@keyframes girarTexto{
+
+0%{
+transform:rotate(-5deg);
+}
+
+50%{
+transform:rotate(5deg);
+}
+
+100%{
+transform:rotate(-5deg);
+}
+
+}
+
+.resultado-card{
+
+margin-top:30px;
+
+}
+
+</style>
+
+</head>
+
+<body>
 
 <?php include("header.php"); ?>
 
 <div class="container">
 
 <h2>
-
 🎡 Ruleta de recetas
-
 </h2>
 
 <p>
@@ -69,74 +129,134 @@ $recetas[]=$row;
 Estación actual:
 
 <strong>
-
-<?php echo $estacion; ?>
-
+<?php echo ucfirst($estacion); ?>
 </strong>
 
 </p>
 
-<div class="form-box">
+<div class="form-box ruleta-box">
 
-<button onclick="girar()">
+<button
+class="ruleta-btn"
+onclick="girar()"
+>
 
-Girar
+🎲 Girar ruleta
 
 </button>
 
 </div>
 
-<h2 id="resultado">
-
-</h2>
+<div id="resultado"></div>
 
 </div>
 
 <script>
 
-let recetas=
-<?php
-echo json_encode($recetas);
-?>;
+let recetas =
+<?php echo json_encode($recetas); ?>;
 
 function girar(){
 
-if(recetas.length===0){
+let resultado =
+document.getElementById("resultado");
 
-document
-.getElementById(
-"resultado"
-)
-.innerHTML=
-"No hay recetas";
+if(recetas.length === 0){
+
+resultado.innerHTML = `
+<div class="card">
+<h3>No hay recetas para esta temporada.</h3>
+</div>
+`;
 
 return;
 
 }
 
-let random=
+resultado.innerHTML = `
+<div class="girando">
+🎡 Girando...
+</div>
+`;
+
+setTimeout(()=>{
+
+let random =
 Math.floor(
-Math.random()
-*
+Math.random() *
 recetas.length
 );
 
-let receta=
+let receta =
 recetas[random];
 
-document
-.getElementById(
-"resultado"
-)
-.innerHTML=
+resultado.innerHTML = `
+
+<div class="card resultado-card">
+
+${receta.imagen ?
 `
-🍽️ Te tocó:
+<img
+src="uploads/${receta.imagen}"
+class="imagen-receta"
+alt="${receta.titulo}"
+>
+`
+:
+""
+}
 
-<br><br>
+<h3>
+🍽️ ${receta.titulo}
+</h3>
 
-${receta.titulo}
+<p>
+
+<strong>Descripción:</strong>
+
+<br>
+
+${receta.descripcion}
+
+</p>
+
+<p>
+
+<strong>Ingredientes:</strong>
+
+<br>
+
+${receta.ingredientes.replace(/\n/g,"<br>")}
+
+</p>
+
+<p>
+
+<strong>Preparación:</strong>
+
+<br>
+
+${receta.pasos.replace(/\n/g,"<br>")}
+
+</p>
+
+<p>
+
+<strong>Tipo:</strong>
+
+${receta.tipo}
+
+</p>
+
+</div>
+
 `;
+
+},2000);
 
 }
 
 </script>
+
+</body>
+</html>

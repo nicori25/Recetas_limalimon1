@@ -364,3 +364,53 @@ body > .form-box {
         margin: 32px auto;
     }
 }
+.btn-editar{
+    display:inline-block;
+    margin-top:6px;
+    padding:7px 16px;
+    font-size:0.85rem;
+    font-weight:600;
+    text-decoration:none;
+    border:none;
+    border-radius:8px;
+
+    background: var(--verde-medio);
+    color: var(--negro);
+
+    transition: background 0.2s, transform 0.1s;
+}
+
+.btn-editar:hover{
+    background:#b5d080;
+    color:var(--negro);
+    transform:translateY(-1px);
+}
+
+.btn-editar:active{
+    transform:translateY(0);
+}
+.card .btn-editar{
+    align-self:flex-start;
+    margin-top:6px;
+    padding:7px 16px;
+    font-size:0.85rem;
+    background:#ddd;
+    color:var(--negro);
+    text-decoration:none;
+    border-radius:8px;
+}
+
+.card .btn-editar:hover{
+    background:#c8b89a;
+}
+.imagen-receta{
+
+width:100%;
+max-height:300px;
+object-fit:contain;
+background:var(--beige);
+border-radius:10px;
+margin-bottom:15px;
+display:block;
+
+}

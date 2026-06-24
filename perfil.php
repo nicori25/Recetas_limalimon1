@@ -57,6 +57,14 @@ name="password"
 id="newpassword"
 placeholder="Nueva contraseña (opcional)"
 >
+<div id="requisitos" style="margin-top:10px;">
+
+❌ Entre 6 y 18 caracteres<br>
+❌ Una mayúscula<br>
+❌ Un número<br>
+❌ Un carácter especial
+
+</div>
 <input type="checkbox" onclick="mostrarNewPassword()">
 <label>Preferencia alimentaria</label>
 
@@ -143,5 +151,39 @@ campo.value="";
 }
 
 }
+
+const password =
+document.getElementById("password");
+
+password.addEventListener("keyup", function(){
+
+let valor = password.value;
+
+let texto = "";
+
+texto +=
+(valor.length >= 6 && valor.length <= 18)
+? "✅ Entre 6 y 18 caracteres<br>"
+: "❌ Entre 6 y 18 caracteres<br>";
+
+texto +=
+(/[A-Z]/.test(valor))
+? "✅ Una mayúscula<br>"
+: "❌ Una mayúscula<br>";
+
+texto +=
+(/[0-9]/.test(valor))
+? "✅ Un número<br>"
+: "❌ Un número<br>";
+
+texto +=
+(/[\W]/.test(valor))
+? "✅ Un carácter especial"
+: "❌ Un carácter especial";
+
+document.getElementById("requisitos").innerHTML =
+texto;
+
+});
 
 </script>

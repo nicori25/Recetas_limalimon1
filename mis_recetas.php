@@ -22,8 +22,21 @@ $stmt->execute();
 $result = $stmt->get_result();
 ?>
 
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Mis recetas</title>
+
 <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
 
 <?php include("header.php"); ?>
 
@@ -37,9 +50,23 @@ $result = $stmt->get_result();
 
 <div class="card">
 
-<h3><?php echo htmlspecialchars($row['titulo']); ?></h3>
+<?php if(!empty($row['imagen'])){ ?>
 
-<p><?php echo nl2br(htmlspecialchars($row['descripcion'])); ?></p>
+<img
+src="uploads/<?php echo htmlspecialchars($row['imagen']); ?>"
+class="imagen-receta"
+alt="Receta"
+>
+
+<?php } ?>
+
+<h3>
+<?php echo htmlspecialchars($row['titulo']); ?>
+</h3>
+
+<p>
+<?php echo nl2br(htmlspecialchars($row['descripcion'])); ?>
+</p>
 
 <p>
 <strong>Ingredientes:</strong>
@@ -48,7 +75,7 @@ $result = $stmt->get_result();
 </p>
 
 <p>
-<strong>Preparacion:</strong>
+<strong>Preparación:</strong>
 <br>
 <?php echo nl2br(htmlspecialchars($row['pasos'])); ?>
 </p>
@@ -58,6 +85,15 @@ $result = $stmt->get_result();
 <?php echo htmlspecialchars($row['tipo']); ?>
 </p>
 
+<div style="display:flex; gap:10px; flex-wrap:wrap;">
+
+<a
+href="editar_receta.php?id=<?php echo (int)$row['id']; ?>"
+class="btn-editar"
+>
+✏️ Editar
+</a>
+
 <form action="eliminar_receta.php" method="POST">
 
 <input
@@ -66,11 +102,13 @@ name="id"
 value="<?php echo (int)$row['id']; ?>"
 >
 
-<button>
-Eliminar
+<button type="submit">
+🗑️ Eliminar
 </button>
 
 </form>
+
+</div>
 
 </div>
 
@@ -79,3 +117,6 @@ Eliminar
 </div>
 
 </div>
+
+</body>
+</html>

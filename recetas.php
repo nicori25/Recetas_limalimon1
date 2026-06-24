@@ -35,7 +35,11 @@ $preferencias = obtener_preferencias($conn);
 
 <div class="form-box">
 
-<form action="guardar_receta.php" method="POST">
+<form
+action="guardar_receta.php"
+method="POST"
+enctype="multipart/form-data"
+>
 
 <input
 type="text"
@@ -117,6 +121,14 @@ Primavera
 </select>
 
 <br><br>
+
+<label>Foto de la receta</label>
+
+<input
+type="file"
+name="imagen"
+accept="image/*"
+>
 
 <button type="submit">
 Guardar receta
