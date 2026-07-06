@@ -7,21 +7,43 @@ if(!isset($_SESSION['user_id'])){
     exit();
 }
 
-$id = $_GET['id'];
+$id = (int)$_GET['id'];
 
-$stmt = $conn->prepare("
-SELECT *
-FROM recetas
-WHERE id=?
-");
+if($_SESSION['rol']=="admin"){
 
-$stmt->bind_param("i",$id);
+    $stmt = $conn->prepare("
+    SELECT *
+    FROM recetas
+    WHERE id=?
+    ");
+
+    $stmt->bind_param("i",$id);
+
+}else{
+
+    $stmt = $conn->prepare("
+    SELECT *
+    FROM recetas
+    WHERE id=?
+    AND usuario_id=?
+    ");
+
+    $stmt->bind_param(
+        "ii",
+        $id,
+        $_SESSION['user_id']
+    );
+
+}
+
 $stmt->execute();
 
 $receta = $stmt->get_result()->fetch_assoc();
 
 if(!$receta){
-    die("Receta no encontrada");
+
+    die("Receta no encontrada o no tienes permisos para editarla.");
+
 }
 ?>
 

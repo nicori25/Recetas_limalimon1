@@ -12,6 +12,13 @@
             <a href="mis_recetas.php">Mis recetas</a>
             <a href="mis_favoritos.php">Mis Favoritos</a>
             <a href="perfil.php">Perfil</a>
+            <?php if(isset($_SESSION['rol']) && $_SESSION['rol']=="admin"){ ?>
+
+            <a href="admin.php">
+            Administración
+            </a>
+
+            <?php } ?>
             <a href="logout.php">Cerrar sesión</a>
 
         <?php } else { ?>

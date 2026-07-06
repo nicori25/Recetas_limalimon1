@@ -11,6 +11,8 @@ $id = (int)$_POST['id'];
 
 $imagenNueva = null;
 
+/* ---------- SUBIR NUEVA IMAGEN ---------- */
+
 if(
     isset($_FILES['imagen']) &&
     $_FILES['imagen']['error'] == 0
@@ -45,59 +47,137 @@ if(
 
         $imagenNueva = $nombreImagen;
     }
+
 }
 
-if($imagenNueva != null){
+/* ---------- ADMINISTRADOR ---------- */
 
-    $stmt = $conn->prepare("
-    UPDATE recetas
-    SET
-    titulo=?,
-    descripcion=?,
-    ingredientes=?,
-    pasos=?,
-    tipo=?,
-    imagen=?
-    WHERE id=?
-    ");
+if($_SESSION['rol']=="admin"){
 
-    $stmt->bind_param(
-    "ssssssi",
-    $_POST['titulo'],
-    $_POST['descripcion'],
-    $_POST['ingredientes'],
-    $_POST['pasos'],
-    $_POST['tipo'],
-    $imagenNueva,
-    $id
-    );
+    if($imagenNueva){
 
-}else{
+        $stmt = $conn->prepare("
+        UPDATE recetas
+        SET
+        titulo=?,
+        descripcion=?,
+        ingredientes=?,
+        pasos=?,
+        tipo=?,
+        imagen=?
+        WHERE id=?
+        ");
 
-    $stmt = $conn->prepare("
-    UPDATE recetas
-    SET
-    titulo=?,
-    descripcion=?,
-    ingredientes=?,
-    pasos=?,
-    tipo=?
-    WHERE id=?
-    ");
+        $stmt->bind_param(
+        "ssssssi",
+        $_POST['titulo'],
+        $_POST['descripcion'],
+        $_POST['ingredientes'],
+        $_POST['pasos'],
+        $_POST['tipo'],
+        $imagenNueva,
+        $id
+        );
 
-    $stmt->bind_param(
-    "sssssi",
-    $_POST['titulo'],
-    $_POST['descripcion'],
-    $_POST['ingredientes'],
-    $_POST['pasos'],
-    $_POST['tipo'],
-    $id
-    );
+    }else{
+
+        $stmt = $conn->prepare("
+        UPDATE recetas
+        SET
+        titulo=?,
+        descripcion=?,
+        ingredientes=?,
+        pasos=?,
+        tipo=?
+        WHERE id=?
+        ");
+
+        $stmt->bind_param(
+        "sssssi",
+        $_POST['titulo'],
+        $_POST['descripcion'],
+        $_POST['ingredientes'],
+        $_POST['pasos'],
+        $_POST['tipo'],
+        $id
+        );
+
+    }
+
+}
+
+/* ---------- USUARIO NORMAL ---------- */
+
+else{
+
+    if($imagenNueva){
+
+        $stmt = $conn->prepare("
+        UPDATE recetas
+        SET
+        titulo=?,
+        descripcion=?,
+        ingredientes=?,
+        pasos=?,
+        tipo=?,
+        imagen=?
+        WHERE id=?
+        AND usuario_id=?
+        ");
+
+        $stmt->bind_param(
+        "ssssssii",
+        $_POST['titulo'],
+        $_POST['descripcion'],
+        $_POST['ingredientes'],
+        $_POST['pasos'],
+        $_POST['tipo'],
+        $imagenNueva,
+        $id,
+        $_SESSION['user_id']
+        );
+
+    }else{
+
+        $stmt = $conn->prepare("
+        UPDATE recetas
+        SET
+        titulo=?,
+        descripcion=?,
+        ingredientes=?,
+        pasos=?,
+        tipo=?
+        WHERE id=?
+        AND usuario_id=?
+        ");
+
+        $stmt->bind_param(
+        "sssssii",
+        $_POST['titulo'],
+        $_POST['descripcion'],
+        $_POST['ingredientes'],
+        $_POST['pasos'],
+        $_POST['tipo'],
+        $id,
+        $_SESSION['user_id']
+        );
+
+    }
+
 }
 
 $stmt->execute();
 
-header("Location: mis_recetas.php");
+/* Si es admin vuelve al panel */
+if($_SESSION['rol']=="admin"){
+
+    header("Location: admin_recetas.php");
+
+}else{
+
+    header("Location: mis_recetas.php");
+
+}
+
 exit();
 ?>
