@@ -20,7 +20,7 @@ Los archivos PHP permanecen disponibles para comparar o exportar; no participan 
 
 - Hacé una copia de MySQL y `uploads/`; trabajá con una copia de la base para el ensayo.
 - Aplicá la migración SQL en un proyecto de Supabase **vacío**. No es una actualización genérica de un proyecto que ya tenga tablas con esos nombres.
-- No hay un proyecto de Supabase conectado a esta rama. Las recetas ilustrativas de la demo son independientes del contenido original.
+- La rama usa por defecto el proyecto de Supabase configurado en `src/lib/supabase.public.ts`; la importación de MySQL es un paso separado. Las recetas ilustrativas de la demo son independientes del contenido original.
 - Los UUID de Supabase reemplazan los enteros de MySQL. `legacy_id` vincula cada usuario, receta y comentario original para repetir la importación sin duplicarlos.
 - Los tiempos y porciones no existían: se importan como **30 minutos y 2 porciones**, para revisión posterior. Las etiquetas se conservan literalmente; no se infieren restricciones por los ingredientes.
 

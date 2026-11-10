@@ -1,7 +1,19 @@
 import { createClient } from '@supabase/supabase-js'
-const url = import.meta.env.VITE_SUPABASE_URL?.trim()
+import { publicSupabaseProject } from './supabase.public'
+
+// Sin overrides, tanto desarrollo como producción usan el proyecto publicado.
+// Si se define alguna variable, se usa exclusivamente ese par de configuración
+// para evitar mezclar la URL de un proyecto con la clave de otro.
+const env = import.meta.env
+const hasOverride =
+  env.VITE_SUPABASE_URL !== undefined ||
+  env.VITE_SUPABASE_PUBLISHABLE_KEY !== undefined ||
+  env.VITE_SUPABASE_ANON_KEY !== undefined
+const url = (hasOverride ? env.VITE_SUPABASE_URL : publicSupabaseProject.url)?.trim()
 const key = (
-  import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || import.meta.env.VITE_SUPABASE_ANON_KEY
+  hasOverride
+    ? env.VITE_SUPABASE_PUBLISHABLE_KEY || env.VITE_SUPABASE_ANON_KEY
+    : publicSupabaseProject.publishableKey
 )?.trim()
 export const isDemo = !url && !key
 export let configurationError = ''

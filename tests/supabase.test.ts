@@ -13,6 +13,18 @@ afterEach(() => {
   vi.unstubAllGlobals()
 })
 describe('Selección explícita de demo e integración Supabase', () => {
+  it('usa el proyecto de LimaLimón por defecto sin depender de archivos locales', async () => {
+    vi.stubEnv('VITE_SUPABASE_URL', undefined)
+    vi.stubEnv('VITE_SUPABASE_PUBLISHABLE_KEY', undefined)
+    vi.stubEnv('VITE_SUPABASE_ANON_KEY', undefined)
+    const client = await import('../src/lib/supabase')
+    stop = () => client.supabase?.auth.stopAutoRefresh()
+    expect(client.isDemo).toBe(false)
+    expect(client.configurationError).toBe('')
+    expect(client.recipeImage('user/photo.jpg')).toContain(
+      'https://syojuxibmkarhtweuqfv.supabase.co/storage/v1/object/public/recipe-images/',
+    )
+  })
   it('usa la demo únicamente si no hay configuración', async () => {
     const client = await import('../src/lib/supabase')
     expect(client.isDemo).toBe(true)
