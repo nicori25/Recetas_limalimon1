@@ -66,7 +66,18 @@ npm run test:db     # PostgreSQL en Docker: esquema, RLS y funciones de administ
 
 Para E2E se usa `/usr/bin/chromium` si existe. En otras máquinas ejecutá `npx playwright install chromium` o definí `PLAYWRIGHT_CHROMIUM_EXECUTABLE` con la ruta del navegador. `test:db` requiere Docker local y elimina su contenedor al terminar. No conecta a una base de producción.
 
-## Publicar
+## GitHub Pages
+
+La rama incluye el workflow de publicación de Pages y el build bajo `/Recetas_limalimon1/`. Consultá [la guía de GitHub Pages](docs/GITHUB_PAGES.md) para la activación inicial, las URLs de Supabase y la verificación del despliegue.
+
+```bash
+npm run build:pages
+npm run test:pages
+```
+
+Dirección prevista una vez desplegado: https://nicori25.github.io/Recetas_limalimon1/
+
+## Publicar en otros alojamientos
 
 ```bash
 npm run build

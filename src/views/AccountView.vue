@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Mail, ArrowUpRight, LogOut, Sprout, Eye, EyeOff, ShieldCheck } from '@lucide/vue'
+import { authRedirectUrl } from '../lib/urls'
 import { useApp } from '../stores/app'
 import { isDemo, supabase } from '../lib/supabase'
 import { friendlyError } from '../lib/utils'
@@ -42,7 +43,7 @@ watch(
     if (v) mode.value = 'recovery'
   },
 )
-const callback = () => `${window.location.origin}${window.location.pathname}`
+const callback = () => authRedirectUrl(window.location.origin)
 function enterDemo() {
   app.enterDemo()
   void router.push('/')

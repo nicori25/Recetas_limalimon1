@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { publicAsset } from './urls'
 import { publicSupabaseProject } from './supabase.public'
 
 // Sin overrides, tanto desarrollo como producción usan el proyecto publicado.
@@ -56,10 +57,11 @@ function createPublicClient() {
 }
 export const supabase = createPublicClient()
 export function recipeImage(path: string | null) {
-  if (!path) return '/images/ensalada.svg'
+  if (!path) return publicAsset('/images/ensalada.svg')
   if (isDemo && /^data:image\/(jpeg|png|webp);base64,/.test(path)) return path
-  if (path.startsWith('/images/')) return path
+  if (path.startsWith('/images/')) return publicAsset(path)
   return (
-    supabase?.storage.from('recipe-images').getPublicUrl(path).data.publicUrl ?? '/images/budin.svg'
+    supabase?.storage.from('recipe-images').getPublicUrl(path).data.publicUrl ??
+    publicAsset('/images/budin.svg')
   )
 }

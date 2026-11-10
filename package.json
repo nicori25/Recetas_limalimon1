@@ -15,7 +15,10 @@
     "migrate:legacy": "node scripts/import-legacy.mjs",
     "test:db": "bash scripts/test-db.sh",
     "format": "prettier --write src tests scripts/*.mjs *.ts *.json *.md docs/*.md .github/workflows/ci.yml",
-    "format:check": "prettier --check src tests scripts/*.mjs *.ts *.json *.md docs/*.md .github/workflows/ci.yml"
+    "format:check": "prettier --check src tests scripts/*.mjs *.ts *.json *.md docs/*.md .github/workflows/ci.yml",
+    "build:pages": "vue-tsc -b && vite build --base=/Recetas_limalimon1/",
+    "test:pages": "playwright test --config=playwright.pages.config.ts",
+    "preview:pages": "vite preview --host 0.0.0.0 --base=/Recetas_limalimon1/"
   },
   "dependencies": {
     "@lucide/vue": "^1.70.0",

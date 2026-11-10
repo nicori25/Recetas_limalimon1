@@ -12,6 +12,7 @@ import {
   X,
   Sparkles,
 } from '@lucide/vue'
+import { publicAsset } from '../lib/urls'
 import { useApp } from '../stores/app'
 import { currentSeason, filterRecipes } from '../lib/utils'
 import { DIETS, SEASONS } from '../lib/types'
@@ -79,7 +80,7 @@ function discover() {
       <div class="hero-circle"></div>
       <span class="hero-script">un poquito de verde,<br />un montón de sabor.</span
       ><img
-        src="/images/hero-salad.svg"
+        :src="publicAsset('/images/hero-salad.svg')"
         alt="Ilustración de una ensalada fresca con vegetales y limón"
         class="hero-food"
       /><span class="hero-stamp"
